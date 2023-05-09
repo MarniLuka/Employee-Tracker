@@ -1,14 +1,13 @@
 // required packages
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
-
-// port number
-const PORT = process.env.PORT || 3001;
+require('dotenv').config();
 
 // Created a connection to the database
 const connectDB = mysql.createConnection(
     {
         host: 'localhost',
+        port: '3306',
         user: process.env.USERNAME,
         password: process.env.PASSWORD,
         database: 'employee_db',
@@ -34,4 +33,24 @@ const question = () => {
                 ],
             },
         ])
+        .then((reponse) => {
+            switch (reponse.choices) {
+                case 'View All Departments':
+                    viewDepartments();
+                    break;
+                
+            }
+        }) 
 }
+
+const viewDepartments = () => {
+    connectDB.query('SELECT * FROM department', (err, res) => {
+        if (err) throw err;
+        // shows the department table from the employee_db
+        console.table(res);
+        // restarts the prompt
+        question();
+    });
+};
+
+question();
