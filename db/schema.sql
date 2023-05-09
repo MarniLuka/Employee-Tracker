@@ -32,5 +32,5 @@ CREATE TABLE employee (
     REFERENCES role (id)
     ON DELETE SET NULL,
     -- References the id within the same table. Null if employee has no manager
-    manager_id INT REFERENCES employee(id) default NULL,
-)
+    manager_id INT DEFAULT NULL
+);
