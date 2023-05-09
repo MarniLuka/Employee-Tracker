@@ -38,7 +38,13 @@ const question = () => {
                 case 'View All Departments':
                     viewDepartments();
                     break;
-                
+                case 'View All Roles':
+                    viewRoles();
+                    break;
+                case 'View All Employees':
+                    viewEmployees();
+                    break;
+
             }
         }) 
 }
@@ -46,9 +52,25 @@ const question = () => {
 const viewDepartments = () => {
     connectDB.query('SELECT * FROM department', (err, res) => {
         if (err) throw err;
-        // shows the department table from the employee_db
+        // shows the wanted table from the employee_db
         console.table(res);
         // restarts the prompt
+        question();
+    });
+};
+
+const viewRoles = () => {
+    connectDB.query('SELECT * FROM role', (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        question();
+    });
+};
+
+const viewEmployees = () => {
+    connectDB.query('SELECT * FROM employee', (err, res) => {
+        if (err) throw err;
+        console.table(res);
         question();
     });
 };
