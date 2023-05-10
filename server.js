@@ -50,6 +50,10 @@ const question = () => {
                 case 'Add a Department':
                     addDepartment();
                     break;
+                case 'Add a Role':
+                    addRole();
+                    break;
+                
             }
         }) 
 }
@@ -99,6 +103,44 @@ const addDepartment = () => {
                 question();
             });
         });
+}
+
+const addRole = () => {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                message: 'What role would you like to add?',
+                name: 'newRole',
+            },
+            {
+                type: 'input',
+                message: 'What is their salary?',
+                name: 'salary',
+            },
+            {
+                type: 'list',
+                message: 'What department do they belong to?',
+                name: 'deptList',
+                // Need to figure out how to do this so you can see the name not just the id, and how to include added departments.
+                choices: [
+                    '1',
+                    '2',
+                    '3',
+                    '4',
+                    '5',
+                ],
+            },
+        ])
+        .then((response) => {
+            connectDB.query(`INSERT INTO role (title, salary, department_id)
+                VALUES ('${response.newRole}', '${response.salary}', '${response.deptList}')`,
+                (err, res) => {
+                    if (err) throw err; 
+                console.log('New role created.'); 
+                question();
+            });
+        })
 }
 
 question();
