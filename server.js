@@ -1,15 +1,18 @@
-// required packages
+// Required packages
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
-require('dotenv').config();
+
+// Tried to use the dotenv package, but when I did, I would immediately get kicked out of the inquirer prompts before getting a chance to answer.
+// require('dotenv').config();
 
 // Created a connection to the database
 const connectDB = mysql.createConnection(
     {
         host: 'localhost',
-        port: '3306',
-        user: process.env.USERNAME,
-        password: process.env.PASSWORD,
+        port: process.env.PORT || 3306,
+        user: 'root',
+        // Add your password here first!!!
+        password: '',
         database: 'employee_db',
     },
     console.log('You are now connected to the employee_db database.')
@@ -26,7 +29,7 @@ const question = () => {
                     'View All Departments',
                     'View All Roles',
                     'View All Employees',
-                    'Add a department',
+                    'Add a Department',
                     'Add a Role',
                     'Add an Employee',
                     'Update an Employee Role',
@@ -44,7 +47,9 @@ const question = () => {
                 case 'View All Employees':
                     viewEmployees();
                     break;
-
+                case 'Add a Department':
+                    addDepartment();
+                    break;
             }
         }) 
 }
@@ -52,9 +57,9 @@ const question = () => {
 const viewDepartments = () => {
     connectDB.query('SELECT * FROM department', (err, res) => {
         if (err) throw err;
-        // shows the wanted table from the employee_db
+        // Shows the wanted table from the employee_db
         console.table(res);
-        // restarts the prompt
+        // Restarts the prompt
         question();
     });
 };
@@ -74,5 +79,26 @@ const viewEmployees = () => {
         question();
     });
 };
+
+const addDepartment = () => {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                message: 'What department would you like to add?',
+                name: 'newDept',
+            },
+        ])
+        .then((response) => {
+            // Adds a new department name to the department table
+            connectDB.query(`INSERT INTO department (name) 
+                VALUES ('${response.newDept}')`, 
+                (err, res) => {
+                    if (err) throw err; 
+                console.log('New department created.'); 
+                question();
+            });
+        });
+}
 
 question();
