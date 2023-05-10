@@ -53,7 +53,9 @@ const question = () => {
                 case 'Add a Role':
                     addRole();
                     break;
-                
+                case 'Add an Employee':
+                    addEmployee();
+                    break;
             }
         }) 
 }
@@ -124,17 +126,75 @@ const addRole = () => {
                 name: 'deptList',
                 // Need to figure out how to do this so you can see the name not just the id, and how to include added departments.
                 choices: [
-                    '1',
-                    '2',
-                    '3',
-                    '4',
-                    '5',
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
                 ],
             },
         ])
         .then((response) => {
             connectDB.query(`INSERT INTO role (title, salary, department_id)
-                VALUES ('${response.newRole}', '${response.salary}', '${response.deptList}')`,
+                VALUES ('${response.newRole}', '${response.salary}', ${response.deptList})`,
+                (err, res) => {
+                    if (err) throw err; 
+                console.log('New role created.'); 
+                question();
+            });
+        })
+}
+
+const addEmployee = () => {
+     inquirer
+        .prompt([
+            {
+                type: 'input',
+                message: 'New employee first name:',
+                name: 'firstName',
+            },
+            {
+                type: 'input',
+                message: 'New employee last name:',
+                name: 'lastName',
+            },
+            {
+                type: 'list',
+                message: 'What role do they belong to?',
+                name: 'roleList',
+                // Need to figure out how to do this so you can see the name not just the id, and how to include added roles.
+                choices: [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                ],
+            },
+            {
+                type: 'list',
+                message: 'Who is their manager?',
+                name: 'manager',
+                // Need to figure out how to do this so you can see the name not just the id so you know who the id is referring to
+                choices: [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                ],
+            },
+        ])
+        .then((response) => {
+            connectDB.query(`INSERT INTO employee 
+                (first_name, last_name, role_id, manager_id) 
+                VALUES ('${response.firstName}', '${response.lastName}', ${response.roleList}, ${response.manager})`,
                 (err, res) => {
                     if (err) throw err; 
                 console.log('New role created.'); 
