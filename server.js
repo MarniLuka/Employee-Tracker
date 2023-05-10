@@ -12,7 +12,7 @@ const connectDB = mysql.createConnection(
         port: process.env.PORT || 3306,
         user: 'root',
         // Add your password here first!!!
-        password: 'School2023!',
+        password: '',
         database: 'employee_db',
     },
     console.log('You are now connected to the employee_db database.')
@@ -33,6 +33,7 @@ const question = () => {
                     'Add a Role',
                     'Add an Employee',
                     'Update an Employee Role',
+                    'Delete a Department',
                 ],
             },
         ])
@@ -58,6 +59,9 @@ const question = () => {
                     break;
                 case 'Update an Employee Role':
                     updateEmployee();
+                    break;
+                case 'Delete a Department':
+                    deleteDpt();
                     break;
             }
         }) 
@@ -134,6 +138,7 @@ const addRole = () => {
                     3,
                     4,
                     5,
+                    6,
                 ],
             },
         ])
@@ -174,6 +179,7 @@ const addEmployee = () => {
                     5,
                     6,
                     7,
+                    8,
                 ],
             },
             {
@@ -191,6 +197,7 @@ const addEmployee = () => {
                     7,
                     8,
                     9,
+                    10,
                 ],
             },
         ])
@@ -240,6 +247,7 @@ const updateEmployee = () => {
                     5,
                     6,
                     7,
+                    8,
                 ],
             },
         ])
@@ -249,22 +257,38 @@ const updateEmployee = () => {
                 WHERE (${response.newRole})`),
                 (err, res) => {
                     if (err) throw err; 
-                console.log('New employee created.'); 
+                console.log('Employee updated.'); 
                 question();
             };
         });
 }
 
+const deleteDpt = () => {
+    inquirer
+        .prompt([
+            {
+                type: 'list',
+                message: 'What department do you want to delete?',
+                name: 'deptList',
+                // Need to figure out how to do this so you can see the name not just the id, and how to include added departments.
+                choices: [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                ],
+            },
+        ])
+        .then((response) => {
+            connectDB.query(`DELETE FROM department WHERE id = ${response.deptList}`,
+                (err, res) => {
+                    if (err) throw err; 
+                console.log('Department deleted.'); 
+                question();
+        });
+    })
+}
 
 question();
-
-
-// 'Frodo',
-// 'Samwise',
-// 'Pippin',
-// 'Merry',
-// 'Aragorn',
-// 'Legolas',
-// 'Gimli',
-// 'Gandalf',
-// 'Boromir',
