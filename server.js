@@ -36,6 +36,7 @@ const question = () => {
                     'Delete a Department',
                     'Delete a Role',
                     'Delete an Employee',
+                    'Exit',
                 ],
             },
         ])
@@ -71,6 +72,9 @@ const question = () => {
                 case 'Delete an Employee':
                     deleteEmployee();
                     break;
+                case 'Exit':
+                    console.log('Bye!');
+                    connectDB.end();
             }
         }) 
 }
