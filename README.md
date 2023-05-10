@@ -11,4 +11,4 @@ Before starting, please make sure to add your MySQL password into the server.js 
 
 To view your database, you need to run 'node server.js' into your terminal. From there, you will see a list of options. Simply choose the one you wish to use, and follow any given prompts.
 
-A [demonstration video]() is provided.
+A [demonstration video](https://drive.google.com/file/d/1oksarSHrwx5SdCvtvG7r9nQY2ywMFRAu/view) is provided.
