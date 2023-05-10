@@ -34,6 +34,8 @@ const question = () => {
                     'Add an Employee',
                     'Update an Employee Role',
                     'Delete a Department',
+                    'Delete a Role',
+                    'Delete an Employee',
                 ],
             },
         ])
@@ -62,6 +64,12 @@ const question = () => {
                     break;
                 case 'Delete a Department':
                     deleteDpt();
+                    break;
+                case 'Delete a Role':
+                    deleteRole();
+                    break;
+                case 'Delete an Employee':
+                    deleteEmployee();
                     break;
             }
         }) 
@@ -278,11 +286,74 @@ const deleteDpt = () => {
                     4,
                     5,
                     6,
+                    7,
                 ],
             },
         ])
         .then((response) => {
             connectDB.query(`DELETE FROM department WHERE id = ${response.deptList}`,
+                (err, res) => {
+                    if (err) throw err; 
+                console.log('Department deleted.'); 
+                question();
+        });
+    })
+}
+
+const deleteRole = () => {
+    inquirer
+        .prompt([
+            {
+                type: 'list',
+                message: 'What role do you want to delete?',
+                name: 'roleList',
+                // Need to figure out how to do this so you can see the name not just the id, and how to include added roles.
+                choices: [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                ],
+            },
+        ])
+        .then((response) => {
+            connectDB.query(`DELETE FROM role WHERE id = ${response.roleList}`,
+                (err, res) => {
+                    if (err) throw err; 
+                console.log('Role deleted.'); 
+                question();
+        });
+    })
+}
+
+const deleteEmployee = () => {
+    inquirer
+        .prompt([
+            {
+                type: 'list',
+                message: 'Which employee do you want to delete?',
+                name: 'employeeList',
+                // Need to figure out how to do this so you can see the name not just the id, and how to include added employees.
+                choices: [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                ],
+            },
+        ])
+        .then((response) => {
+            connectDB.query(`DELETE FROM employee WHERE id = ${response.employeeList}`,
                 (err, res) => {
                     if (err) throw err; 
                 console.log('Department deleted.'); 
