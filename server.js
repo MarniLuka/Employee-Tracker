@@ -12,7 +12,7 @@ const connectDB = mysql.createConnection(
         port: process.env.PORT || 3306,
         user: 'root',
         // Add your password here first!!!
-        password: '',
+        password: 'School2023!',
         database: 'employee_db',
     },
     console.log('You are now connected to the employee_db database.')
@@ -55,6 +55,9 @@ const question = () => {
                     break;
                 case 'Add an Employee':
                     addEmployee();
+                    break;
+                case 'Update an Employee Role':
+                    updateEmployee();
                     break;
             }
         }) 
@@ -197,10 +200,71 @@ const addEmployee = () => {
                 VALUES ('${response.firstName}', '${response.lastName}', ${response.roleList}, ${response.manager})`,
                 (err, res) => {
                     if (err) throw err; 
-                console.log('New role created.'); 
+                console.log('New employee created.'); 
                 question();
             });
         })
 }
 
+
+// Needs further debugging
+const updateEmployee = () => {
+    inquirer
+        .prompt([
+            {
+                type: 'list',
+                message: 'Which employee would you like to update?',
+                name: 'updateEmployee',
+                choices: [
+                    'Frodo',
+                    'Samwise',
+                    'Pippin',
+                    'Merry',
+                    'Aragorn',
+                    'Legolas',
+                    'Gimli',
+                    'Gandalf',
+                    'Boromir',
+                ],
+            },
+            {
+                type: 'list',
+                message: 'What is their new role?',
+                name: 'newRole',
+                // Need to figure out how to do this so you can see the name not just the id, and how to include added roles.
+                choices: [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                ],
+            },
+        ])
+        .then((response) => {
+            connectDB.query(`UPDATE employee 
+                SET ('${response.updateEmployee}')
+                WHERE (${response.newRole})`),
+                (err, res) => {
+                    if (err) throw err; 
+                console.log('New employee created.'); 
+                question();
+            };
+        });
+}
+
+
 question();
+
+
+// 'Frodo',
+// 'Samwise',
+// 'Pippin',
+// 'Merry',
+// 'Aragorn',
+// 'Legolas',
+// 'Gimli',
+// 'Gandalf',
+// 'Boromir',
