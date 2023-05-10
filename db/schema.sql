@@ -29,7 +29,7 @@ CREATE TABLE employee (
     role_id INT,
     -- References the id in the role table
     FOREIGN KEY (role_id)
-    REFERENCES role (id)
+    REFERENCES role(id)
     ON DELETE SET NULL,
     -- References the id within the same table. Null if employee has no manager
     manager_id INT DEFAULT NULL

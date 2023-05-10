@@ -98,7 +98,8 @@ const viewRoles = () => {
 };
 
 const viewEmployees = () => {
-    connectDB.query('SELECT * FROM employee', (err, res) => {
+    connectDB.query(
+        'SELECT * FROM employee JOIN role ON employee.role_id = role.id', (err, res) => {
         if (err) throw err;
         console.table(res);
         question();
